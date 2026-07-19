@@ -2,9 +2,13 @@ const express = require("express");
 const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
+const cors = require("cors");
+
 const { exec } = require("child_process");
 
 const app = express();
+app.use(cors());
+
 const PORT = process.env.PORT || 3000;
 
 //Download PDF from Supabase
