@@ -1,19 +1,15 @@
 
 import { supabase } from "./supabase.js";
-const webpush = require("web-push");
+import webpush from "web-push";
+import dotenv from "dotenv";
+import express from "express";
+import axios from "axios";
+import fs from "fs";
+import path from "path";
+import cors from "cors";
+import { exec } from "child_process";
 
-const keys = webpush.generateVAPIDKeys();
-
-const dotenv = require("dotenv");
 dotenv.config();
-
-const express = require("express");
-const axios = require("axios");
-const fs = require("fs");
-const path = require("path");
-const cors = require("cors");
-
-const { exec } = require("child_process");
 
 const app = express();
 app.use(cors());
