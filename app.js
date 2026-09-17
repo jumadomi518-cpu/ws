@@ -119,11 +119,15 @@ webpush.setVapidDetails(
 });
 
 app.post("/api/send", async (req, res) => {
-  const { title, body, url } = req.body;
+  const { title, body, url, senderId } = req.body;
 
   const { data, error } = await supabase
     .from("push_subscriptions")
     .select("subscription");
+
+
+const recipients = data.filter(sub => sub.user_id !== senderId);
+
 
  if (error) {
   console.log(error);
@@ -138,7 +142,7 @@ app.post("/api/send", async (req, res) => {
   });
 
   await Promise.allSettled(
-  data.map(sub =>
+  recipients.map(sub =>
     webpush.sendNotification(sub.subscription, payload)
       .catch(err => {
         console.log("Push failed:", err.statusCode);
