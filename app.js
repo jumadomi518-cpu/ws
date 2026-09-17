@@ -93,9 +93,6 @@ webpush.setVapidDetails(
 );
 
 
-app.post("/api/save-subscription", async (req, res) => {
-  const { subscription, userId } = req.body;
-
   // save in DB (Supabase)
   app.post("/api/save-subscription", async (req, res) => {
   const { subscription, userId } = req.body;
