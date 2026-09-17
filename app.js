@@ -97,14 +97,28 @@ app.post("/api/save-subscription", async (req, res) => {
   const { subscription, userId } = req.body;
 
   // save in DB (Supabase)
-  await supabase.from("push_subscriptions").upsert({
-  user_id: userId,
-  subscription
-}, {
-  onConflict: "user_id"
-});
+  app.post("/api/save-subscription", async (req, res) => {
+  const { subscription, userId } = req.body;
 
-  res.sendStatus(201);
+  console.log("Incoming:", req.body);
+
+  const { data, error } = await supabase
+    .from("push_subscriptions")
+    .upsert(
+      {
+        user_id: userId,
+        subscription
+      },
+      { onConflict: "user_id" }
+    );
+
+  if (error) {
+    console.log("Supabase error:", error);
+    return res.status(500).json(error);
+  }
+
+  console.log("Saved:", data);
+  res.status(201).json({ success: true });
 });
 
 app.post("/api/send", async (req, res) => {
