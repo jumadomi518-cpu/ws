@@ -1,16 +1,24 @@
-FROM node:20
 
-# Install MuPDF
-RUN apt-get update && apt-get install -y mupdf-tools
+FROM node:20-bookworm-slim
 
-# Set working directory
 WORKDIR /app
 
-# Copy files
-COPY . .
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libreoffice \
+    mupdf-tools \
+    poppler-utils \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy package files
+COPY package*.json ./
 
 # Install Node dependencies
-RUN npm install
+RUN npm install --omit=dev
+
+# Copy application files
+COPY . .
 
 # Start server
-CMD ["node", "app.js"]
+CMD ["npm", "start"]
+
